@@ -20,7 +20,7 @@ class RequestRepo(BaseRepo):
 			'id': genie_request_obj.id, 'info': genie_request_obj.info, 'itemId': genie_request_obj.item,
 			'item': request_item_title(genie_request_obj.item), 'qty': genie_request_obj.qty,
 			'userId': genie_request_obj.user_id, 'user': genie_request_obj.user.serialize(),
-			'status_text': request_status_text(genie_request_obj.status), 'status': genie_request_obj.status,
+			'statusText': request_status_text(genie_request_obj.status), 'status': genie_request_obj.status,
 			'timestamps': {'createdAt': format_response_timestamp(genie_request_obj.created_at),
 						   'updatedAt': format_response_timestamp(genie_request_obj.updated_at)}
 		}

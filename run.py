@@ -12,14 +12,17 @@ manager = Manager(app)
 # Migrations
 manager.add_command('db', MigrateCommand)
 
+
 @app.before_request
 def check_token():
 	return Auth.check_token()
+
 
 # Creates the db tables
 @manager.command
 def create_db():
 	db.create_all()
+
 
 # Drops the db tables
 @manager.command
@@ -50,6 +53,7 @@ def show_routes():
 		
 		count+=1
 	print(count, 'Routes Found')
+
 
 if __name__ == '__main__':
 	manager.run()

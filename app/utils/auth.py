@@ -14,7 +14,6 @@ class Auth:
 	
 	''' Routes The Authentication Header Should Not Be Applied To'''
 	authentication_header_ignore = [
-		'/',
 		'/docs',
 		'/bot'
 	]
