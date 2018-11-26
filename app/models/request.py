@@ -8,5 +8,6 @@ class Request(BaseModel):
 	item = db.Column(db.Integer())
 	qty = db.Column(db.String())
 	info = db.Column(db.Text(), nullable=True)
+	status = db.Column(db.Integer(), default=0)
 	
 	user = db.relationship('User')
