@@ -38,8 +38,12 @@ class BotController(BaseController):
 						"value": "4"
 					},
 					{
-						"label": "Other",
+						"label": "Maintenance",
 						"value": "5"
+					},
+					{
+						"label": "Other",
+						"value": "50"
 					},
 				]
 			},
