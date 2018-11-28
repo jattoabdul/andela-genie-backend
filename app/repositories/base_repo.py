@@ -73,6 +73,3 @@ class BaseRepo:
 	def pagination_meta(self, paginator):
 		return {'totalRows': paginator.total, 'totalPages': paginator.pages, 'currentPage': paginator.page,
 				'nextPage': paginator.next_num, 'prevPage': paginator.prev_num}
-
-
-	
