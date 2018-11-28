@@ -23,7 +23,7 @@ class HomeController(BaseController):
 				
 				# This request has been marked ad completed already. No Updates allowed.
 				if request_obj.status == 2:
-					return self.handle_response(msg='This request has already been marked as completed. No Updates allowed')
+					return self.handle_response(msg='This request has already been marked as completed. No Updates allowed', status_code=400)
 				
 				# Update Request Object
 				self.request_repo.update(request_obj, **{'status': status})
