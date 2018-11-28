@@ -10,7 +10,7 @@ class RequestRepo(BaseRepo):
 		
 	def list_requests(self):
 		
-		all_requests = self._model.query.order_by(GenieRequest.created_at.desc()).paginate(error_out=False)
+		all_requests = self._model.query.order_by(GenieRequest.id.desc()).paginate(error_out=False)
 		# all_requests = self.fetch_all()
 		
 		request_list = [self.serialize_request_response(request_item) for request_item in all_requests.items]
