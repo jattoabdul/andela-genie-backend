@@ -29,7 +29,7 @@ def request_category_title(item):
 
 
 def request_location_title(item):
-	items = {0: 'Not Applicable', 1: 'Electrical', 2: 'Carpentry', 3: 'Plumbing', 4: 'HVAC', 50: 'Other'}
+	items = {1: 'EPIC Tower', 2: 'Amity', 3: 'Jacob Mews'}
 	if type(item) is int and item in items:
 		return items[item]
 	raise TypeError('argument must be of type int or invalid ID provided')
