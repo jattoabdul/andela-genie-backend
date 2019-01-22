@@ -48,6 +48,56 @@ class BotController(BaseController):
 				]
 			},
 			{
+				"label": "Category",
+				"type": "select",
+				"name": "category",
+				"options": [
+					{
+						"label": "Not Applicable",
+						"value": "0"
+					},
+					{
+						"label": "Electrical",
+						"value": "1"
+					},
+					{
+						"label": "Carpentry",
+						"value": "2"
+					},
+					{
+						"label": "Plumbing",
+						"value": "3"
+					},
+					{
+						"label": "HVAC",
+						"value": "4"
+					},
+					{
+						"label": "Other",
+						"value": "50"
+					},
+				]
+			},
+			{
+				"label": "Location",
+				"type": "select",
+				"name": "location",
+				"options": [
+					{
+						"label": "EPIC Tower",
+						"value": "1"
+					},
+					{
+						"label": "Amity",
+						"value": "2"
+					},
+					{
+						"label": "Jacob Mews",
+						"value": "3"
+					},
+				]
+			},
+			{
 				"label": "Quantity",
 				"type": "text",
 				"name": "qty",
@@ -86,6 +136,8 @@ class BotController(BaseController):
 				request_item = int(payload['submission']['item'])
 				request_qty = payload['submission']['qty']
 				info = payload['submission']['info']
+				category = payload['submission']['category']
+				location = payload['submission']['location']
 				
 				if not request_qty.isdigit():
 					return self.handle_response(slack_response={'errors': [{'name': 'qty', 'error': 'Quantity Must Be Numeric'}]})
@@ -94,7 +146,9 @@ class BotController(BaseController):
 				user = self.user_repo.find_or_create(email=slack_user_email,
 													 **{'first_name': slack_user_fname, 'last_name': slack_user_lname,
 														'slack_id': slack_id})
-				genie_request = self.request_repo.new_request(user_id=user.id, item=request_item, qty=request_qty, info=info)
+				genie_request = self.request_repo.new_request(
+					user_id=user.id, item=request_item, qty=request_qty, category=category, location=location, info=info
+				)
 				
 				slack_data = {'text': f"I've got your request. Let me do some magic now. Request ID: {genie_request.id}"}
 				requests.post(webhook_url, data=json.dumps(slack_data), headers={'Content-Type': 'application/json'})

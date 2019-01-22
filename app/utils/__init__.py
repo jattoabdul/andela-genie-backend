@@ -15,7 +15,21 @@ def to_pascal_case(word, sep='_'):
 
 
 def request_item_title(item):
-	items = {1: 'Locker Allocation', 2: 'Back / Lumbar Support', 3: 'Temporary ID Cards', 4: 'Chair', 5: 'Maintenance', 50:'Other'}
+	items = {1: 'Locker Allocation', 2: 'Back / Lumbar Support', 3: 'Temporary ID Cards', 4: 'Chair', 5: 'Maintenance', 50: 'Other'}
+	if type(item) is int and item in items:
+		return items[item]
+	raise TypeError('argument must be of type int or invalid ID provided')
+
+
+def request_category_title(item):
+	items = {0: 'Not Applicable', 1: 'Electrical', 2: 'Carpentry', 3: 'Plumbing', 4: 'HVAC', 50: 'Other'}
+	if type(item) is int and item in items:
+		return items[item]
+	raise TypeError('argument must be of type int or invalid ID provided')
+
+
+def request_location_title(item):
+	items = {0: 'Not Applicable', 1: 'Electrical', 2: 'Carpentry', 3: 'Plumbing', 4: 'HVAC', 50: 'Other'}
 	if type(item) is int and item in items:
 		return items[item]
 	raise TypeError('argument must be of type int or invalid ID provided')

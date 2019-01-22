@@ -1,5 +1,5 @@
 from app.repositories.base_repo import BaseRepo
-from app.utils import request_item_title, format_response_timestamp, request_status_text
+from app.utils import request_item_title, format_response_timestamp, request_status_text, request_category_title, request_location_title
 from app.models.request import Request as GenieRequest
 
 
@@ -20,14 +20,17 @@ class RequestRepo(BaseRepo):
 		return {
 			'id': genie_request_obj.id, 'info': genie_request_obj.info, 'itemId': genie_request_obj.item,
 			'item': request_item_title(genie_request_obj.item), 'qty': genie_request_obj.qty,
+			'category': request_category_title(genie_request_obj.category), 'location': request_location_title(genie_request_obj.location),
 			'userId': genie_request_obj.user_id, 'user': genie_request_obj.user.serialize(),
 			'statusText': request_status_text(genie_request_obj.status), 'status': genie_request_obj.status,
-			'timestamps': {'createdAt': format_response_timestamp(genie_request_obj.created_at),
-						   'updatedAt': format_response_timestamp(genie_request_obj.updated_at)}
+			'timestamps': {
+				'createdAt': format_response_timestamp(genie_request_obj.created_at),
+				'updatedAt': format_response_timestamp(genie_request_obj.updated_at)
+			}
 		}
 	
 	@staticmethod
-	def new_request(user_id, item, qty, info=None):
-		request = GenieRequest(user_id=user_id, item=item, qty=qty, info=info)
+	def new_request(user_id, item, qty, category, location, info=None):
+		request = GenieRequest(user_id=user_id, item=item, qty=qty, category=category, location=location, info=info)
 		request.save()
 		return request
