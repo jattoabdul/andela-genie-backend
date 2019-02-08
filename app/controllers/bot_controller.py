@@ -330,7 +330,7 @@ class BotController(BaseController):
 					return make_response('', 200)
 				
 				slack_data = {
-					'text': f'Sorry No Free Lockers Found at the moment. Please another floor or wing',
+					'text': f'Sorry No Free Lockers Found at the moment. Please check another floor or wing',
 					'attachments': [
 						{
 							'fields': [
