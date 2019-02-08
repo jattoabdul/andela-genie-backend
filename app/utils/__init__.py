@@ -28,6 +28,13 @@ def request_category_title(item):
 	raise TypeError('argument must be of type int or invalid ID provided')
 
 
+def floor_wings(wing):
+	wings = {1: 'Gold Coast', 2: 'Naija', 3: 'Kampala', 4: 'Safari', 5: 'Big Apple', 6: 'City By The Bay', 7: 'Eko'}
+	if type(wing) is int and wing in wings:
+		return wings[wing]
+	raise TypeError('argument must be of type int or invalid ID provided')
+
+
 def request_location_title(item):
 	items = {1: 'EPIC Tower', 2: 'Amity', 3: 'Jacob Mews'}
 	if type(item) is int and item in items:
