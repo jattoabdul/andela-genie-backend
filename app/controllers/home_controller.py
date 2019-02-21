@@ -115,7 +115,7 @@ Staff Message: {msg}```
 					locker.save()
 					
 					msg = f'Hi {first_name}, \n' \
-						f'You currently are assigned locker number {locker_number} on the {humanize.ordinal(int(floor))} floor {floor_wings(int(wing_id))} wing. \n' \
+						f'You currently are assigned locker number {locker_number} on the {humanize.ordinal(int(floor_id))} floor {floor_wings(int(wing_id))} wing. \n' \
 						f'If this information is wrong, please reach out to the facilities team for correction. If correct, kindly ignore this message and have a great day.\n' \
 						f'`Genie`'
 					
