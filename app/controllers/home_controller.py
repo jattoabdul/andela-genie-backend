@@ -2,6 +2,9 @@ from app.controllers.base_controller import BaseController
 from app.repositories.request_repo import RequestRepo
 from app.utils import request_status_text, request_item_title
 from app.utils.slackhelper import SlackHelper
+import pandas as pd
+from app.repositories.user_repo import UserRepo
+from app.models.locker import Locker
 
 
 class HomeController(BaseController):
@@ -42,4 +45,75 @@ Staff Message: {msg}```
 			return self.handle_response('OK', payload={'request': self.request_repo.serialize_request_response(request_obj)})
 		except Exception as e:
 			return self.handle_response(msg='Invalid Status ID Provided', status_code=400)
+	
+	def import_data(self):
+		issues = []
+		
+		csv = pd.read_csv('lockers.csv', )
+		for row in csv.itertuples():
+			email = row[1]
+			name = row[2]
+			locker_number = row[3]
+			status = row[4]
+			floor = row[5].lower()
+			wing = row[6].lower()
+			
+			if floor == 'fifth':
+				floor_id = 5
+				
+			if floor == 'fourth':
+				floor_id = 4
+				
+			if floor == 'third':
+				floor_id = 3
+				
+			if floor == 'first':
+				floor_id = 1
+				
+			if wing == 'eko':
+				wing_id = 7
+				
+			if wing == 'bay':
+				wing_id = 6
+				
+			if wing == 'big apple':
+				wing_id = 5
+				
+			if wing == 'safari':
+				wing_id = 4
+				
+			if wing == 'kampala':
+				wing_id = 3
+				
+			if wing == 'naija':
+				wing_id = 2
+				
+			if wing == 'golf coast':
+				wing_id = 1
+			
+			if type(email) is str:
+				first_name = name.split()[0]
+				last_name = name.split()[-1]
+				print(first_name, last_name)
+				
+				slack_user = self.slackhelper.find_by_email(email)
+				
+				if slack_user['ok'] is False:
+					missing_users = {'name': name, 'email': email, 'locker': locker_number, 'floor': floor, 'wing': wing}
+					issues.append(missing_users)
+					locker = Locker(locker_number=locker_number, floor=floor_id, wing=wing_id, status=0)
+					locker.save()
+				
+				else:
+					slack_id = slack_user['user']['id']
+				
+					user = UserRepo().find_or_create(email=email, **{'first_name': first_name, 'last_name': last_name, 'slack_id': slack_id})
+					locker = Locker(locker_number=locker_number, floor=floor_id, wing=wing_id, user_id=user.id, status=1)
+					locker.save()
+					
+			if type(email) is float or status.lower == 'free':
+				locker = Locker(locker_number=locker_number, floor=floor_id, wing=wing_id, status=0)
+				locker.save()
+		
+		return self.handle_response('OK', payload={'missing users': issues, 'info': 'Invalid or Ex-Andela Staff. Their Lockers have been marked as available by default.'})
 

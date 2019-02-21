@@ -16,3 +16,8 @@ def homepage():
 @Security.validator(['status|required:int'])
 def update_request_status(request_id):
 	return home_controller.update_request_status(request_id)
+
+
+@home_blueprint.route('/import/', methods=['GET'])
+def import_data():
+	return home_controller.import_data()

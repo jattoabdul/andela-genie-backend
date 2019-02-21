@@ -2,7 +2,6 @@ import json
 import requests
 import humanize
 import threading
-import time
 from app.repositories.locker_repo import LockerRepo
 from app.utils import request_item_title, floor_wings, request_location_title, request_category_title
 from app.repositories.request_repo import RequestRepo
@@ -35,13 +34,12 @@ class BotController(BaseController):
 					"attachment_type": "default",
 					"actions":
 						[
-							{'name': 'request_type', 'text': 'Locker Allocation', 'type': "button", 'value': 1},
+							{'name': 'request_type', 'text': 'Allocations', 'type': "button", 'value': 1},
 							{'name': 'request_type', 'text': 'More Options', 'type': "button", 'value': 0, 'style': 'danger'}
 						]
 				}
 			]
 		}
-
 		return self.handle_response(slack_response=slack_response)
 		
 	def interactions(self):
@@ -152,6 +150,28 @@ class BotController(BaseController):
 					return make_response('', 200)
 				
 				if payload['actions'][0]['value'] == '1':
+					
+					slack_response = {
+						"text": f'Which do you need?',
+						"attachments": [
+							{
+								"text": "",
+								"callback_id": "allocation_type_selector",
+								"color": "#3AA3E3",
+								"attachment_type": "default",
+								"actions":
+									[
+										{'name': 'allocation_type', 'text': 'Locker Allocation', 'type': "button", 'value': 'locker_allocation'},
+										{'name': 'allocation_type', 'text': 'Amity Allocation', 'type': "button", 'value': 'amity_allocation'}
+									]
+							}
+						]
+					}
+					return self.handle_response(slack_response=slack_response)
+					
+			if payload['callback_id'] == 'allocation_type_selector':
+				
+				if payload['actions'][0]['value'] == 'locker_allocation':
 					dialog_element = [
 						{
 							"label": "Select Your Floor",
