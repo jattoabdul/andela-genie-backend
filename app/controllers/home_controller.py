@@ -51,7 +51,6 @@ Staff Message: {msg}```
 	def import_data(self):
 		issues = []
 		page_number, = self.get_params('page')
-		return self.handle_response(page_number)
 		
 		csv = pd.read_csv(f'lockers-{page_number}.csv', )
 		for row in csv.itertuples():
