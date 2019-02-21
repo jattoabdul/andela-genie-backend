@@ -258,6 +258,9 @@ class BotController(BaseController):
 					]
 					self.create_dialog(trigger_id=trigger_id, dialog_element=dialog_element, callback_id='locker_request_form')
 					return self.handle_response(slack_response={'text': 'Select Floor and Wing'})
+				
+				if payload['actions'][0]['value'] == 'amity_allocation':
+					return self.handle_response(slack_response={'text': 'Coming Soon. Comms will be released when this feature is ready.'})
 		
 		if payload['type'] == 'dialog_submission':
 			slack_user_info = self.slackhelper.user_info(slack_id)
