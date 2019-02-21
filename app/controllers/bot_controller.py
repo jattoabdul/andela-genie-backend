@@ -35,7 +35,7 @@ class BotController(BaseController):
 					"actions":
 						[
 							{'name': 'request_type', 'text': 'Allocations', 'type': "button", 'value': 1},
-							{'name': 'request_type', 'text': 'More Options', 'type': "button", 'value': 0, 'style': 'danger'},
+							{'name': 'request_type', 'text': 'Requests', 'type': "button", 'value': 0, 'style': 'danger'},
 							{'name': 'request_type', 'text': 'Show Your Allocations', 'type': "button", 'value': 2},
 						]
 				}
