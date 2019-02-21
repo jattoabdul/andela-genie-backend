@@ -35,7 +35,8 @@ class BotController(BaseController):
 					"actions":
 						[
 							{'name': 'request_type', 'text': 'Allocations', 'type': "button", 'value': 1},
-							{'name': 'request_type', 'text': 'More Options', 'type': "button", 'value': 0, 'style': 'danger'}
+							{'name': 'request_type', 'text': 'More Options', 'type': "button", 'value': 0, 'style': 'danger'},
+							{'name': 'request_type', 'text': 'Show Your Allocations', 'type': "button", 'value': 2},
 						]
 				}
 			]
@@ -168,7 +169,30 @@ class BotController(BaseController):
 						]
 					}
 					return self.handle_response(slack_response=slack_response)
+				
+				if payload['actions'][0]['value'] == '2':
 					
+					user = self.user_repo.find_first(slack_id=slack_id)
+					if user:
+						assigned_locker = self.locker_repo.find_first(user_id=user.id)
+						if assigned_locker:
+							slack_data = {
+								'text': f'Your Locker Allocation Data',
+								'attachments': [
+									{
+										'fields': [
+											{'title': 'Floor', 'value': humanize.ordinal(int(assigned_locker.floor)), 'short': True},
+											{'title': 'Wing', 'value': floor_wings(int(assigned_locker.wing)), 'short': True},
+											{'title': 'Locker Number', 'value': assigned_locker.locker_number, 'short': True},
+										]
+									}
+								]
+							}
+							requests.post(webhook_url, data=json.dumps(slack_data), headers={'Content-Type': 'application/json'})
+							return make_response('', 200)
+						
+						return self.handle_response(slack_response={'text': 'You Do Not Have Any Locker allocated to you.'})
+				
 			if payload['callback_id'] == 'allocation_type_selector':
 				
 				if payload['actions'][0]['value'] == 'locker_allocation':

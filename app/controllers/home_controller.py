@@ -91,7 +91,7 @@ Staff Message: {msg}```
 			if wing == 'naija':
 				wing_id = 2
 				
-			if wing == 'golf coast':
+			if wing == 'gold coast':
 				wing_id = 1
 			
 			if type(email) is str:
