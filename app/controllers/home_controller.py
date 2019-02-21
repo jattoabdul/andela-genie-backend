@@ -1,10 +1,12 @@
 from app.controllers.base_controller import BaseController
 from app.repositories.request_repo import RequestRepo
-from app.utils import request_status_text, request_item_title
+from app.utils import request_status_text, request_item_title, floor_wings
 from app.utils.slackhelper import SlackHelper
 import pandas as pd
 from app.repositories.user_repo import UserRepo
 from app.models.locker import Locker
+import threading
+import humanize
 
 
 class HomeController(BaseController):
@@ -48,8 +50,10 @@ Staff Message: {msg}```
 	
 	def import_data(self):
 		issues = []
+		page_number, = self.get_params('page')
+		return self.handle_response(page_number)
 		
-		csv = pd.read_csv('lockers.csv', )
+		csv = pd.read_csv(f'lockers-{page_number}.csv', )
 		for row in csv.itertuples():
 			email = row[1]
 			name = row[2]
@@ -111,6 +115,15 @@ Staff Message: {msg}```
 					locker = Locker(locker_number=locker_number, floor=floor_id, wing=wing_id, user_id=user.id, status=1)
 					locker.save()
 					
+					msg = f'Hi {first_name}, \n' \
+						f'You currently are assigned locker number {locker_number} on the {humanize.ordinal(int(floor))} floor {floor_wings(int(wing_id))} wing. \n' \
+						f'If this information is wrong, please reach out to the facilities team for correction. If correct, kindly ignore this message and have a great day.\n' \
+						f'`Genie`'
+					
+					t = threading.Thread(target=self.slackhelper.post_message, args=(msg, slack_id))
+					t.daemon = True
+					t.start()
+			
 			if type(email) is float or status.lower == 'free':
 				locker = Locker(locker_number=locker_number, floor=floor_id, wing=wing_id, status=0)
 				locker.save()
