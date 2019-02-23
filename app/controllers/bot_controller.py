@@ -304,7 +304,8 @@ class BotController(BaseController):
 								{'title': 'Item', 'value': request_item_title(int(request_item)), 'short': True},
 								{'title': 'Location', 'value': request_location_title(int(location)), 'short': True},
 								{'title': 'Category', 'value': request_category_title(int(category)), 'short': True},
-								{'title': 'Quantity', 'value': request_qty, 'short': True}
+								{'title': 'Quantity', 'value': request_qty, 'short': True},
+								{'title': 'Additional Information', 'value': info}
 							]
 						}
 					]
